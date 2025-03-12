@@ -13,7 +13,7 @@ public class AppExceptionHandler {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", error.getMessage());
         modelAndView.setStatus(HttpStatus.BAD_REQUEST);
-        modelAndView.setViewName("error");
+        modelAndView.setViewName("innerError");
         return modelAndView;
     }
 
@@ -21,7 +21,7 @@ public class AppExceptionHandler {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("message", error.getMessage());
         modelAndView.setStatus(HttpStatus.BAD_REQUEST);
-        modelAndView.setViewName("error");
+        modelAndView.setViewName("innerError");
         return modelAndView;
     }
 

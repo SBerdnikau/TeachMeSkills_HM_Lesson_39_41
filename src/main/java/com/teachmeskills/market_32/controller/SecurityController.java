@@ -32,18 +32,20 @@ public class SecurityController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute @Valid RegistrationRequestDto requestDto, BindingResult bindingResult) {
+    public String registration(@ModelAttribute @Valid RegistrationRequestDto requestDto,
+                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError error : bindingResult.getAllErrors()) {
-               if (Objects.equals(error.getCode(), "CustomAge")){
-                   throw new AgeException(error.getDefaultMessage());
-               }
+                if (Objects.equals(error.getCode(), "CustomAge")) {
+                    throw new AgeException(error.getDefaultMessage());
+                }
+                System.out.println(error);
             }
             System.out.println(bindingResult.getAllErrors());
             return "registration";
         }
 
-        Boolean result  = securityService.registration(requestDto);
+        Boolean result = securityService.registration(requestDto);
         return "user";
     }
 }

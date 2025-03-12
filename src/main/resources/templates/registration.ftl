@@ -1,11 +1,11 @@
 
-<html lang="en">
+<html lang="eng">
 <head>
     <title>Registration</title>
 </head>
 <body>
     <h2>Registration</h2>
-    <form action="registration" method="POST">
+    <form action="registration" method="post">
         <div>
             <label for="firstName">First name:</label>
             <input type="text" id="firstName" name="firstName" >

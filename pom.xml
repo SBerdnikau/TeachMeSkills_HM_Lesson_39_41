@@ -23,7 +23,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
@@ -70,7 +69,6 @@
             <artifactId>postgresql</artifactId>
             <version>42.5.5</version>
         </dependency>
-
     </dependencies>
 
 </project>

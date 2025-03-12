@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
 
     @Autowired
@@ -29,18 +28,18 @@ public class UserService {
         return Optional.empty();
     }
 
-    public Optional<User> createUser(User user){
-        Optional<Long> userId = userRepository.createUser(user);
-        if(userId.isPresent()){
-            return getUserById(userId.get());
-        }
-        return Optional.empty();
-    }
-
     public Optional<User> deleteUser(Long id){
         Boolean result = userRepository.deleteUser(id);
         if(result){
             return getUserById(id);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<User> createUser(User user){
+        Optional<Long> userId = userRepository.createUser(user);
+        if(userId.isPresent()){
+            return getUserById(userId.get());
         }
         return Optional.empty();
     }

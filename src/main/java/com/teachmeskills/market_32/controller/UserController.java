@@ -22,31 +22,30 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String getUserCreatePage(){
+    public String getUserCreatePage() {
         return "createUser";
     }
 
-    //update
     @GetMapping
-    public String getUserUpdatePage(@RequestParam("userId") Long userId, Model model, HttpServletResponse response){
+    public String getUserUpdatePage(@RequestParam("userId") Long userId, Model model, HttpServletResponse response) {
         Optional<User> user = userService.getUserById(userId);
-        if(user.isEmpty()){
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        if (user.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND); //404
             model.addAttribute("message", "User not found: id=" + userId);
-            return "error";
+            return "innerError";
         }
         model.addAttribute("user", user.get());
         return "edit";
     }
 
     //Create
-   @PostMapping("/create")
-    public String createUser(@ModelAttribute("user") User user, Model model, HttpServletResponse response ){
+    @PostMapping("/create")
+    public String createUser(@ModelAttribute("user") User user, HttpServletResponse response, Model model) {
         Optional<User> createdUser = userService.createUser(user);
-        if(createdUser.isEmpty()){
+        if (createdUser.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "User not created");
-            return "error";
+            return "innerError";
         }
         model.addAttribute("user", createdUser.get());
         return "user";
@@ -54,26 +53,26 @@ public class UserController {
 
     //Read
     @GetMapping("/{id}")
-    public String getUserById(@PathVariable Long id, Model model, HttpServletResponse response){
+    public String getUserById(@PathVariable("id") Long id, Model model, HttpServletResponse response) {
         Optional<User> user = userService.getUserById(id);
-        if(user.isEmpty()){
-            response.setStatus(HttpServletResponse.SC_CONFLICT);
+        if (user.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND); //404
             model.addAttribute("message", "User not found: id=" + id);
-            return "error";
+            return "innerError";
         }
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setStatus(HttpServletResponse.SC_OK); //200
         model.addAttribute("user", user.get());
         return "user";
     }
 
     //Update
-    @GetMapping
-    public String updateUser(@ModelAttribute("user") User user, Model model, HttpServletResponse response ){
+    @PostMapping
+    public String updateUser(@ModelAttribute("user") User user, Model model, HttpServletResponse response) {
         Optional<User> userUpdated = userService.updateUser(user);
-        if(userUpdated.isEmpty()){
+        if (userUpdated.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
-            model.addAttribute("message", "User not updated");
-            return "error";
+            model.addAttribute("message", "User not updated.");
+            return "innerError";
         }
         response.setStatus(HttpServletResponse.SC_OK);
         model.addAttribute("user", userUpdated.get());
@@ -81,13 +80,13 @@ public class UserController {
     }
 
     //Delete
-    @GetMapping("/delete")
-    public String deleteUser(@RequestParam("userId") Long userId, Model model, HttpServletResponse response){
+    @PostMapping("/delete")
+    public String deleteUser(@RequestParam("userId") Long userId, Model model, HttpServletResponse response) {
         Optional<User> userDeleted = userService.deleteUser(userId);
-        if(userDeleted.isEmpty()){
+        if (userDeleted.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
-            model.addAttribute("message", "User not deleted");
-            return "error";
+            model.addAttribute("message", "User not deleted.");
+            return "innerError";
         }
         response.setStatus(HttpServletResponse.SC_OK);
         model.addAttribute("user", userDeleted.get());

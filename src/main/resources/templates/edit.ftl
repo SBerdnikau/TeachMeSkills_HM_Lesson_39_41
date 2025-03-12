@@ -1,5 +1,5 @@
 <#import "macros/userInfoMacro.ftl" as um>
-<html>
+<html lang="">
 <head>
     <title>Update user</title>
 </head>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.Optional;
 
+
 @Repository
 public class UserRepository {
 
@@ -26,15 +27,26 @@ public class UserRepository {
             PreparedStatement getUserStatement = connection.prepareStatement(SQLQuery.GET_USER_BY_ID);
             getUserStatement.setLong(1, id);
             ResultSet resultSet = getUserStatement.executeQuery();
-            parseUser(resultSet);
-
+            return parseUser(resultSet);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
-    public Optional<Long> createUser(User user) {
+    public Boolean deleteUser(Long id){
+        Connection connection = databaseService.getConnection();
+        try {
+            PreparedStatement getUserStatement = connection.prepareStatement(SQLQuery.DELETE_USER);
+            getUserStatement.setLong(1, id);
+            return getUserStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public Optional<Long> createUser(User user){
         Connection connection = databaseService.getConnection();
         Long userId = null;
 
@@ -46,7 +58,7 @@ public class UserRepository {
             createUserStatement.setString(4, user.getEmail());
             createUserStatement.setString(5, user.getGender());
             createUserStatement.setString(6, user.getTelephoneNumber());
-            createUserStatement.setTimestamp(7,    new Timestamp(System.currentTimeMillis())  );
+            createUserStatement.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
             createUserStatement.setBoolean(8, false);
             createUserStatement.executeUpdate();
 
@@ -55,7 +67,7 @@ public class UserRepository {
                 userId = generatedKeys.getLong(1);
             }
             return Optional.of(userId);
-        } catch (SQLException e) {
+        } catch (SQLException e){
             System.out.println(e.getMessage());
             return Optional.empty();
         }
@@ -65,30 +77,16 @@ public class UserRepository {
         Connection connection = databaseService.getConnection();
 
         try {
-            PreparedStatement updateUserStatement = connection.prepareStatement(SQLQuery.UPDATE_USER);
-            updateUserStatement.setString(1, user.getFirstName());
-            updateUserStatement.setString(2, user.getSecondName());
-            updateUserStatement.setInt(3, user.getAge());
-            updateUserStatement.setString(4, user.getEmail());
-            updateUserStatement.setString(5, user.getGender());
-            updateUserStatement.setString(6, user.getTelephoneNumber());
-            updateUserStatement.setTimestamp(7,    new Timestamp(System.currentTimeMillis())  );
-            updateUserStatement.setLong(7, user.getId());
-            return updateUserStatement.executeUpdate() > 0;
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public Boolean deleteUser(Long id) {
-        Connection connection = databaseService.getConnection();
-
-        try {
-            PreparedStatement getUserStatement = connection.prepareStatement(SQLQuery.DELETE_USER);
-            getUserStatement.setLong(1, id);
+            PreparedStatement getUserStatement = connection.prepareStatement(SQLQuery.UPDATE_USER);
+            getUserStatement.setString(1, user.getFirstName());
+            getUserStatement.setString(2, user.getSecondName());
+            getUserStatement.setInt(3, user.getAge());
+            getUserStatement.setString(4, user.getEmail());
+            getUserStatement.setString(5, user.getGender());
+            getUserStatement.setString(6, user.getTelephoneNumber());
+            getUserStatement.setLong(7, user.getId());
             return getUserStatement.executeUpdate() > 0;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
@@ -111,5 +109,4 @@ public class UserRepository {
         }
         return Optional.empty();
     }
-
 }
