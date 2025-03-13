@@ -1,42 +1,42 @@
-<html lang="eng">
+<html>
 <head>
     <title>Create user</title>
 </head>
 <body>
-<h2>Registration</h2>
+<h2>Create user</h2>
 <form action="create" method="POST">
     <div>
-        <label for="firstName">First name:</label>
-        <input type="text" id="firstName" name="firstName" >
+        <label for="firstname">First name:</label>
+        <input type="text" id="firstname" name="firstname">
     </div>
+
     <div>
         <label for="secondName">Second name:</label>
-        <input type="text" id="secondName" name="secondName" >
+        <input type="text" id="secondName" name="secondName">
     </div>
+
     <div>
         <label for="age">Age:</label>
-        <input id="age" type="number" name="age" >
+        <input type="number" id="age" name="age">
     </div>
+
+
     <div>
         <label for="email">Email:</label>
-        <input id="email" type="text" name="email" >
+        <input type="email" id="email" name="email">
     </div>
+
     <div>
-        <label for="gender">Gender:</label>
-        <input id="gender" type="text" name="gender" >
+        <label for="sex">Sex:</label>
+        <input type="text" id="sex" name="sex">
     </div>
+
     <div>
-        <label for="telephoneNumber">Phone number:</label>
-        <input type="text" id="telephoneNumber" name="telephoneNumber" >
+        <label for="telephoneNumber">Telephone number:</label>
+        <input type="text" id="telephoneNumber" name="telephoneNumber">
     </div>
-    <div>
-        <label for="login">Login:</label>
-        <input type="text" id="login" name="login">
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
-    </div>
+
+
     <input type="submit" value="Create user">
 </form>
 </body>

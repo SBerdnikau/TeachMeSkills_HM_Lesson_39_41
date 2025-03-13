@@ -1,11 +1,10 @@
-<#import "macros/userInfoMacro.ftl" as um>
-<html lang="eng">
+<#import "macros/userInfoMacro.ftl" as um> 
+<html>
 <head>
     <title>User information</title>
 </head>
 <body>
 <h1>User information:</h1>
-
 <@um.userInfo user/>
 
 <form action="/user" method="get">

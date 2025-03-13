@@ -1,4 +1,4 @@
-<html lang="eng">
+<html>
 <head>
     <title>Error page</title>
 </head>
