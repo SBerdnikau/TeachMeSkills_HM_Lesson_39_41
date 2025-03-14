@@ -12,4 +12,5 @@ public interface SQLQuery {
     String DELETE_PRODUCT = "DELETE FROM product WHERE id = ?";
     String CREATE_PRODUCT = "INSERT INTO product (id, name, price, created, updated) VALUES (DEFAULT, ?, ?, DEFAULT, ?)";
     String UPDATE_PRODUCT = "UPDATE product SET name=?, price=?, updated=DEFAULT WHERE id = ?";
+    String GET_ALL_USERS = "SELECT * FROM users";
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -96,5 +97,19 @@ public class UserController {
         response.setStatus(HttpServletResponse.SC_OK);
         model.addAttribute("user", userDeleted.get());
         return "user";
+    }
+
+    //getAll
+    @GetMapping("/getAll")
+    public String getUserListPage(Model model, HttpServletResponse response) {
+        List<Optional<User>> users = userService.getAllUsers();
+        if (users.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_CONFLICT);
+            model.addAttribute("message", "Users not found");
+            return "innerError";
+        }
+        response.setStatus(HttpServletResponse.SC_OK);
+        model.addAttribute("users", users);
+        return "userList";
     }
 }

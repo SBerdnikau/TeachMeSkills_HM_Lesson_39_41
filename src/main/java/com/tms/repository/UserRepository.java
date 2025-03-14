@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -96,6 +98,23 @@ public class UserRepository {
         }
     }
 
+    public List<Optional<User>> getAllUsers() {
+        Connection connection = databaseService.getConnection();
+
+        List<Optional<User>> users = new ArrayList<>();
+        try {
+            PreparedStatement getAllUsersStatement = connection.prepareStatement(SQLQuery.GET_ALL_USERS);
+            ResultSet resultSet = getAllUsersStatement.executeQuery();
+            while (resultSet.next()) {
+               users.add(parseUser(resultSet));
+            }
+            return users;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+            return users;
+        }
+    }
+
     private Optional<User> parseUser(ResultSet resultSet) throws SQLException {
         if (resultSet.next()) {
             User user = new User();
@@ -113,4 +132,5 @@ public class UserRepository {
         }
         return Optional.empty();
     }
+
 }
