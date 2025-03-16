@@ -1,4 +1,8 @@
-create table public.users
+create sequence public.security_id_seq;
+
+alter sequence public.security_id_seq owner to postgres;
+
+create table if not exists public.users
 (
     id               bigserial
         constraint users_pk
@@ -17,17 +21,17 @@ create table public.users
 alter table public.users
     owner to postgres;
 
-create table public.security
+create table if not exists public.security
 (
-    id       integer                                       not null
+    id       bigint      default nextval('security_id_seq'::regclass) not null
         constraint security_pk
             primary key,
-    login    varchar(20)                                   not null,
-    password varchar(20)                                   not null,
-    role     varchar(20) default 'USER'::character varying not null,
-    created  timestamp   default now()                     not null,
+    login    varchar(20)                                              not null,
+    password varchar(20)                                              not null,
+    role     varchar(20) default 'USER'::character varying            not null,
+    created  timestamp   default now()                                not null,
     updated  timestamp   default now(),
-    user_id  bigint                                        not null
+    user_id  bigint                                                   not null
         unique
         constraint security_users_id_fk
             references public.users
@@ -37,7 +41,7 @@ create table public.security
 alter table public.security
     owner to postgres;
 
-create table public.product
+create table if not exists public.product
 (
     id      bigserial
         constraint product_pk
@@ -51,7 +55,7 @@ create table public.product
 alter table public.product
     owner to postgres;
 
-create table public.l_users_product
+create table if not exists public.l_users_product
 (
     id         integer not null
         constraint l_users_product_pk
@@ -70,4 +74,3 @@ create table public.l_users_product
 
 alter table public.l_users_product
     owner to postgres;
-
