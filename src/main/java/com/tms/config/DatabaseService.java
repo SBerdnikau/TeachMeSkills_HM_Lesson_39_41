@@ -1,6 +1,5 @@
 package com.tms.config;
 
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -10,11 +9,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-@NoArgsConstructor
 @Component
 @PropertySource("classpath:application.properties")
 public class DatabaseService {
+
     public Environment environment;
+
+    public DatabaseService() {
+    }
 
     @Autowired
     public DatabaseService(Environment environment) {

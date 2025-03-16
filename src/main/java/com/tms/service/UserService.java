@@ -1,10 +1,12 @@
 package com.tms.service;
 
 import com.tms.model.User;
+import com.tms.model.dto.UserRequestDto;
 import com.tms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,10 +23,10 @@ public class UserService {
         return userRepository.getUserById(id);
     }
 
-    public Optional<User> updateUser(User user){
-        Boolean result = userRepository.updateUser(user);
+    public Optional<User> updateUser(UserRequestDto userRequestDto){
+        Boolean result = userRepository.updateUser(userRequestDto);
         if(result){
-            return getUserById(user.getId());
+            return getUserById(userRequestDto.getId());
         }
         return Optional.empty();
     }
@@ -37,11 +39,19 @@ public class UserService {
         return Optional.empty();
     }
     
-    public Optional<User> createUser(User user){
-        Optional<Long> userId = userRepository.createUser(user);
+    public Optional<User> createUser(UserRequestDto userRequestDto){
+        Optional<Long> userId = userRepository.createUser(userRequestDto);
         if(userId.isPresent()){
             return getUserById(userId.get());
         }
         return Optional.empty();
+    }
+
+    public List<User> getAllUsers(){
+        List<User> users = userRepository.getAllUsers();
+        if(users.isEmpty()){
+            return null;
+        }
+        return users;
     }
 }

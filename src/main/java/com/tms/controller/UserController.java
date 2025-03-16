@@ -1,6 +1,7 @@
 package com.tms.controller;
 
 import com.tms.model.User;
+import com.tms.model.dto.UserRequestDto;
 import com.tms.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +32,8 @@ public class UserController {
         return "createUser";
     }
 
-    @GetMapping
-    public String getUserUpdatePage(@RequestParam("userId") Long userId, Model model, HttpServletResponse response) {
+    @GetMapping("/update-page/{id}")
+    public String getUserUpdatePage(@PathVariable("id") Long userId, Model model, HttpServletResponse response) {
         Optional<User> user = userService.getUserById(userId);
         if (user.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); //404
@@ -46,8 +46,8 @@ public class UserController {
 
     //Create
     @PostMapping("/create")
-    public String createUser(@ModelAttribute("user") User user, HttpServletResponse response, Model model) {
-        Optional<User> createdUser = userService.createUser(user);
+    public String createUser(@ModelAttribute("user") UserRequestDto userRequestDto, HttpServletResponse response, Model model) {
+        Optional<User> createdUser = userService.createUser(userRequestDto);
         if (createdUser.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "User not created");
@@ -73,8 +73,8 @@ public class UserController {
 
     //Update
     @PostMapping
-    public String updateUser(@ModelAttribute("user") User user, Model model, HttpServletResponse response) {
-        Optional<User> userUpdated = userService.updateUser(user);
+    public String updateUser(@ModelAttribute("user") UserRequestDto userRequestDto, Model model, HttpServletResponse response) {
+        Optional<User> userUpdated = userService.updateUser(userRequestDto);
         if (userUpdated.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "User not updated.");
@@ -86,8 +86,8 @@ public class UserController {
     }
 
     //Delete
-    @PostMapping("/delete")
-    public String deleteUser(@RequestParam("userId") Long userId, Model model, HttpServletResponse response) {
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long userId, Model model, HttpServletResponse response) {
         Optional<User> userDeleted = userService.deleteUser(userId);
         if (userDeleted.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -102,7 +102,7 @@ public class UserController {
     //getAll
     @GetMapping("/getAll")
     public String getUserListPage(Model model, HttpServletResponse response) {
-        List<Optional<User>> users = userService.getAllUsers();
+        List<User> users = userService.getAllUsers();
         if (users.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "Users not found");
@@ -110,6 +110,6 @@ public class UserController {
         }
         response.setStatus(HttpServletResponse.SC_OK);
         model.addAttribute("users", users);
-        return "userList";
+        return "usersList";
     }
 }

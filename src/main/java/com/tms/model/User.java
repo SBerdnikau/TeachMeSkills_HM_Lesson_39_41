@@ -1,8 +1,6 @@
 package com.tms.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,21 +21,20 @@ public class User {
     private Boolean isDeleted;
     private Security securityInfo;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                ", sex='" + sex + '\'' +
-                ", telephoneNumber='" + telephoneNumber + '\'' +
-                ", created=" + created +
-                ", updated=" + updated +
-                ", isDeleted=" + isDeleted +
-                ", securityInfo=" + securityInfo +
-                '}';
+    public User() {}
+
+    public User(Long id, String firstname, String secondName, Integer age, String email, String sex, String telephoneNumber, Timestamp created, Timestamp updated, Boolean isDeleted, Security securityInfo) {
+        this.id = id;
+        this.firstname = firstname;
+        this.secondName = secondName;
+        this.age = age;
+        this.email = email;
+        this.sex = sex;
+        this.telephoneNumber = telephoneNumber;
+        this.created = created;
+        this.updated = updated;
+        this.isDeleted = isDeleted;
+        this.securityInfo = securityInfo;
     }
 
     public Long getId() {
@@ -126,5 +123,22 @@ public class User {
 
     public void setSecurityInfo(Security securityInfo) {
         this.securityInfo = securityInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", sex='" + sex + '\'' +
+                ", telephoneNumber='" + telephoneNumber + '\'' +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", isDeleted=" + isDeleted +
+                ", securityInfo=" + securityInfo +
+                '}';
     }
 }

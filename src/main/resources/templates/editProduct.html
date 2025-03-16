@@ -1,11 +1,9 @@
-<#import "macros/productInfoMacro.ftl" as um>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Update product</title>
 </head>
 <body>
 <h1>Current product info:</h1>
-<@um.productInfo product/>
 
 <h1>Update user:</h1>
 <form action="/product" method="post">

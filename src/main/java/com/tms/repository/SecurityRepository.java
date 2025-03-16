@@ -3,6 +3,7 @@ package com.tms.repository;
 import com.tms.config.DatabaseService;
 import com.tms.config.SQLQuery;
 import com.tms.model.Role;
+import com.tms.model.Security;
 import com.tms.model.dto.RegistrationRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,18 +14,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Optional;
 
 @Repository
 public class SecurityRepository {
 
-    private DatabaseService databaseService;
+    private final DatabaseService databaseService;
 
     @Autowired
     public SecurityRepository(DatabaseService databaseService) {
         this.databaseService = databaseService;
     }
 
-    public Boolean registration(RegistrationRequestDto requestDto) throws SQLException {
+    public Optional<Long> registration(RegistrationRequestDto requestDto) throws SQLException {
         Connection connection = databaseService.getConnection();
 
         try {
@@ -55,11 +57,12 @@ public class SecurityRepository {
             createSecurityStatement.executeUpdate();
 
             connection.commit();
-            return true;
+            return Optional.of(userId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             connection.rollback();
         }
-        return false;
+        return Optional.empty();
     }
+
 }

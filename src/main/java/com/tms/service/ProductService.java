@@ -1,10 +1,12 @@
 package com.tms.service;
 
 import com.tms.model.Product;
+import com.tms.model.dto.ProductRequestDto;
 import com.tms.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,18 +23,18 @@ public class ProductService {
         return productRepository.getProductById(id);
     }
 
-    public Optional<Product> createProduct(Product product){
-        Optional<Long> productId = productRepository.createProduct(product);
+    public Optional<Product> createProduct(ProductRequestDto productRequestDto){
+        Optional<Long> productId = productRepository.createProduct(productRequestDto);
         if(productId.isPresent()){
             return productRepository.getProductById(productId.get());
         }
         return Optional.empty();
     }
 
-    public Optional<Product> updateProduct(Product product){
-        Boolean result = productRepository.updateProduct(product);
+    public Optional<Product> updateProduct(ProductRequestDto productRequestDto){
+        Boolean result = productRepository.updateProduct(productRequestDto);
         if(result){
-            return getProductById(product.getId());
+            return getProductById(productRequestDto.getId());
         }
         return Optional.empty();
     }
@@ -44,4 +46,9 @@ public class ProductService {
         }
         return Optional.empty();
     }
+
+    public List<Product> getAllProducts(){
+        return productRepository.getAllProducts();
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.tms.controller;
 
 import com.tms.model.Product;
+import com.tms.model.User;
+import com.tms.model.dto.ProductRequestDto;
 import com.tms.service.ProductService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,8 +30,8 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String createProduct(@ModelAttribute("product") Product product, Model model, HttpServletResponse response){
-        Optional<Product> createdProduct = productService.createProduct(product);
+    public String createProduct(@ModelAttribute("product") ProductRequestDto productRequestDto, Model model, HttpServletResponse response){
+        Optional<Product> createdProduct = productService.createProduct(productRequestDto);
         if(createdProduct.isEmpty()){
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "Product creation failed");
@@ -64,8 +67,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public String updateProduct(@ModelAttribute("product") Product product, Model model, HttpServletResponse response){
-        Optional<Product> updatedProduct = productService.updateProduct(product);
+    public String updateProduct(@ModelAttribute("product") ProductRequestDto productRequestDto, Model model, HttpServletResponse response){
+        Optional<Product> updatedProduct = productService.updateProduct(productRequestDto);
         if(updatedProduct.isEmpty()){
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "Product update failed");
@@ -87,5 +90,19 @@ public class ProductController {
         response.setStatus(HttpServletResponse.SC_OK);
         model.addAttribute("product", deletedProduct.get());
         return "product";
+    }
+
+    //getAll
+    @GetMapping("/getAll")
+    public String getUserListPage(Model model, HttpServletResponse response) {
+        List<Product> products = productService.getAllProducts();
+        if (products.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_CONFLICT);
+            model.addAttribute("message", "Products not found");
+            return "innerError";
+        }
+        response.setStatus(HttpServletResponse.SC_OK);
+        model.addAttribute("products", products);
+        return "productsList";
     }
 }
