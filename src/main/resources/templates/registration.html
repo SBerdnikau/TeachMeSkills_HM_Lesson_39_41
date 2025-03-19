@@ -1,10 +1,10 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Registration</title>
 </head>
 <body>
 <h2>Registration</h2>
-<form action="registration" method="POST">
+<form th:action="@{registration}" method="POST">
     <label for="firstname">First name:</label>
     <input type="text" id="firstname" name="firstname" >
 

@@ -6,7 +6,7 @@
 <body>
 
 <h1>Update user:</h1>
-<form action="/user" method="post">
+<form th:action="@{user}" method="post">
     <div>
         <label for="firstname">First name:</label>
         <input type="text" id="firstname" name="firstname" th:value="${user.firstname}" required>

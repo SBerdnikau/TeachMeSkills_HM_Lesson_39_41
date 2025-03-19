@@ -3,8 +3,6 @@ package com.tms.repository;
 import com.tms.config.DatabaseService;
 import com.tms.config.SQLQuery;
 import com.tms.model.Product;
-import com.tms.model.User;
-import com.tms.model.dto.ProductRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -39,14 +37,14 @@ public class ProductRepository {
         }
     }
 
-    public Optional<Long> createProduct(ProductRequestDto productRequestDto) {
+    public Optional<Long> createProduct(Product product) {
         Connection connection = databaseService.getConnection();
         Long productId = null;
 
         try {
             PreparedStatement createProductStatement = connection.prepareStatement(CREATE_PRODUCT, Statement.RETURN_GENERATED_KEYS);
-            createProductStatement.setString(1, productRequestDto.getName());
-            createProductStatement.setDouble(2, productRequestDto.getPrice());
+            createProductStatement.setString(1, product.getName());
+            createProductStatement.setDouble(2, product.getPrice());
             createProductStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
             createProductStatement.executeUpdate();
 
@@ -61,14 +59,14 @@ public class ProductRepository {
         }
     }
 
-    public Boolean updateProduct(ProductRequestDto productRequestDto) {
+    public Boolean updateProduct(Product product) {
         Connection connection = databaseService.getConnection();
 
         try {
             PreparedStatement getProductStatement = connection.prepareStatement(UPDATE_PRODUCT);
-            getProductStatement.setString(1, productRequestDto.getName());
-            getProductStatement.setDouble(2, productRequestDto.getPrice());
-            getProductStatement.setLong(3, productRequestDto.getId());
+            getProductStatement.setString(1, product.getName());
+            getProductStatement.setDouble(2, product.getPrice());
+            getProductStatement.setLong(3, product.getId());
             return getProductStatement.executeUpdate() > 0;
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -96,7 +94,13 @@ public class ProductRepository {
             PreparedStatement getAllUsersStatement = connection.prepareStatement(SQLQuery.GET_ALL_PRODUCTS);
             ResultSet resultSet = getAllUsersStatement.executeQuery();
             while (resultSet.next()) {
-                products.add(parseProductGetAllProducts(resultSet));
+                Product product = new Product();
+                product.setId(resultSet.getLong("id"));
+                product.setName(resultSet.getString("name"));
+                product.setPrice(resultSet.getDouble("price"));
+                product.setCreated(resultSet.getTimestamp("created"));
+                product.setUpdated(resultSet.getTimestamp("updated"));
+                products.add(product);
             }
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -115,19 +119,6 @@ public class ProductRepository {
             return Optional.of(product);
         }
         return Optional.empty();
-    }
-
-    private Product parseProductGetAllProducts(ResultSet resultSet) throws SQLException {
-        if (resultSet.next()) {
-            Product product = new Product();
-            product.setId(resultSet.getLong("id"));
-            product.setName(resultSet.getString("name"));
-            product.setPrice(resultSet.getDouble("price"));
-            product.setCreated(resultSet.getTimestamp("created"));
-            product.setUpdated(resultSet.getTimestamp("updated"));
-            return product;
-        }
-        return null;
     }
 }
 

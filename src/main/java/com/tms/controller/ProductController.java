@@ -1,8 +1,6 @@
 package com.tms.controller;
 
 import com.tms.model.Product;
-import com.tms.model.User;
-import com.tms.model.dto.ProductRequestDto;
 import com.tms.service.ProductService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,27 +28,27 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String createProduct(@ModelAttribute("product") ProductRequestDto productRequestDto, Model model, HttpServletResponse response){
-        Optional<Product> createdProduct = productService.createProduct(productRequestDto);
+    public String createProduct(@ModelAttribute("product") Product product, Model model, HttpServletResponse response){
+        Optional<Product> createdProduct = productService.createProduct(product);
         if(createdProduct.isEmpty()){
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "Product creation failed");
             return "innerError";
         }
         model.addAttribute("product", createdProduct.get());
-        return "product";
+        return "products";
     }
 
-    @GetMapping
-    public String getProductEditPage(@RequestParam("productId") Long productId, Model model, HttpServletResponse response){
-        Optional<Product> product = productService.getProductById(productId);
+    @GetMapping("/edit/{id}")
+    public String getProductEditPage(@PathVariable("id") Long id, Model model, HttpServletResponse response){
+        Optional<Product> product = productService.getProductById(id);
         if(product.isEmpty()){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             model.addAttribute("message", "Product not found id=" + product);
             return "innerError";
         }
         model.addAttribute("product", product.get());
-        return "editUser";
+        return "editProduct";
     }
 
     @PostMapping("/{id}")
@@ -66,9 +64,9 @@ public class ProductController {
         return "product";
     }
 
-    @PostMapping
-    public String updateProduct(@ModelAttribute("product") ProductRequestDto productRequestDto, Model model, HttpServletResponse response){
-        Optional<Product> updatedProduct = productService.updateProduct(productRequestDto);
+    @PostMapping("/update")
+    public String updateProduct(@ModelAttribute("product") Product product, Model model, HttpServletResponse response){
+        Optional<Product> updatedProduct = productService.updateProduct(product);
         if(updatedProduct.isEmpty()){
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "Product update failed");
@@ -76,7 +74,7 @@ public class ProductController {
         }
         response.setStatus(HttpServletResponse.SC_OK);
         model.addAttribute("product", updatedProduct.get());
-        return "product";
+        return "products";
     }
 
     @PostMapping("/delete")
@@ -89,11 +87,11 @@ public class ProductController {
         }
         response.setStatus(HttpServletResponse.SC_OK);
         model.addAttribute("product", deletedProduct.get());
-        return "product";
+        return "products";
     }
 
     //getAll
-    @GetMapping("/getAll")
+    @GetMapping("/all-products")
     public String getUserListPage(Model model, HttpServletResponse response) {
         List<Product> products = productService.getAllProducts();
         if (products.isEmpty()) {
@@ -103,6 +101,6 @@ public class ProductController {
         }
         response.setStatus(HttpServletResponse.SC_OK);
         model.addAttribute("products", products);
-        return "productsList";
+        return "products";
     }
 }

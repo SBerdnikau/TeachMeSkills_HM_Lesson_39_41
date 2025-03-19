@@ -1,7 +1,6 @@
 package com.tms.controller;
 
 import com.tms.model.User;
-import com.tms.model.dto.UserRequestDto;
 import com.tms.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class UserController {
         return "createUser";
     }
 
-    @GetMapping("/update-page/{id}")
+    @GetMapping("/edit/{id}")
     public String getUserUpdatePage(@PathVariable("id") Long userId, Model model, HttpServletResponse response) {
         Optional<User> user = userService.getUserById(userId);
         if (user.isEmpty()) {
@@ -46,8 +45,8 @@ public class UserController {
 
     //Create
     @PostMapping("/create")
-    public String createUser(@ModelAttribute("user") UserRequestDto userRequestDto, HttpServletResponse response, Model model) {
-        Optional<User> createdUser = userService.createUser(userRequestDto);
+    public String createUser(@ModelAttribute("user") User user, HttpServletResponse response, Model model) {
+        Optional<User> createdUser = userService.createUser(user);
         if (createdUser.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "User not created");
@@ -73,8 +72,8 @@ public class UserController {
 
     //Update
     @PostMapping
-    public String updateUser(@ModelAttribute("user") UserRequestDto userRequestDto, Model model, HttpServletResponse response) {
-        Optional<User> userUpdated = userService.updateUser(userRequestDto);
+    public String updateUser(@ModelAttribute("user") User user, Model model, HttpServletResponse response) {
+        Optional<User> userUpdated = userService.updateUser(user);
         if (userUpdated.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "User not updated.");
@@ -100,7 +99,7 @@ public class UserController {
     }
 
     //getAll
-    @GetMapping("/getAll")
+    @GetMapping("/all-users")
     public String getUserListPage(Model model, HttpServletResponse response) {
         List<User> users = userService.getAllUsers();
         if (users.isEmpty()) {
@@ -110,6 +109,6 @@ public class UserController {
         }
         response.setStatus(HttpServletResponse.SC_OK);
         model.addAttribute("users", users);
-        return "usersList";
+        return "users";
     }
 }

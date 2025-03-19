@@ -1,7 +1,6 @@
 package com.tms.service;
 
 import com.tms.model.Product;
-import com.tms.model.dto.ProductRequestDto;
 import com.tms.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,18 +22,18 @@ public class ProductService {
         return productRepository.getProductById(id);
     }
 
-    public Optional<Product> createProduct(ProductRequestDto productRequestDto){
-        Optional<Long> productId = productRepository.createProduct(productRequestDto);
+    public Optional<Product> createProduct(Product product){
+        Optional<Long> productId = productRepository.createProduct(product);
         if(productId.isPresent()){
             return productRepository.getProductById(productId.get());
         }
         return Optional.empty();
     }
 
-    public Optional<Product> updateProduct(ProductRequestDto productRequestDto){
-        Boolean result = productRepository.updateProduct(productRequestDto);
+    public Optional<Product> updateProduct(Product product){
+        Boolean result = productRepository.updateProduct(product);
         if(result){
-            return getProductById(productRequestDto.getId());
+            return getProductById(product.getId());
         }
         return Optional.empty();
     }
