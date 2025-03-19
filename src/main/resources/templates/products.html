@@ -21,7 +21,7 @@
         <td>
             <a th:href="@{/product/edit/{id}(id=${product.id})}">Edit</a>
             <form th:action="@{/product/delete}" method="post" style="display:inline;">
-                <input type="hidden" name="productsId" th:value="${product.id}" />
+                <input type="hidden" name="id" th:value="${product.id}" />
                 <button type="submit">Delete</button>
             </form>
         </td>

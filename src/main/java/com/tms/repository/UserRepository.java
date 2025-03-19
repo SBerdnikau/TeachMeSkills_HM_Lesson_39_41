@@ -116,7 +116,7 @@ public class UserRepository {
                 user.setCreated(resultSet.getTimestamp("created"));
                 user.setUpdated(resultSet.getTimestamp("updated"));
                 user.setSex(resultSet.getString("sex"));
-                user.setDeleted(resultSet.getBoolean("is_deleted"));
+                user.setIsDeleted(resultSet.getBoolean("is_deleted"));
                 users.add(user);
             }
         }catch (SQLException e){
@@ -137,7 +137,7 @@ public class UserRepository {
             user.setCreated(resultSet.getTimestamp("created"));
             user.setUpdated(resultSet.getTimestamp("updated"));
             user.setSex(resultSet.getString("sex"));
-            user.setDeleted(resultSet.getBoolean("is_deleted"));
+            user.setIsDeleted(resultSet.getBoolean("is_deleted"));
             return Optional.of(user);
         }
         return Optional.empty();

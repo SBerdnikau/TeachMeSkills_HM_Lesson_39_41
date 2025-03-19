@@ -79,9 +79,10 @@ public class ProductRepository {
         try{
             PreparedStatement getProductStatement = connection.prepareStatement(DELETE_PRODUCT);
             getProductStatement.setLong(1, id);
-            return getProductStatement.executeUpdate() > 1;
+            int rowsDeleted = getProductStatement.executeUpdate();
+            return rowsDeleted > 0;
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println("Error deleting product: " + e.getMessage());
             return false;
         }
     }
@@ -103,7 +104,7 @@ public class ProductRepository {
                 products.add(product);
             }
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.out.println("Error fetching all products: " + e.getMessage());
         }
         return products;
     }

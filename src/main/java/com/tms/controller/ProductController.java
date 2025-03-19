@@ -76,11 +76,11 @@ public class ProductController {
     }
 
     @PostMapping("/delete")
-    public String deleteProduct(@RequestParam("productId") Long productId, Model model, HttpServletResponse response){
-        Optional<Product> deletedProduct = productService.deleteProduct(productId);
-        if(deletedProduct.isEmpty()){
+    public String deleteProduct(@RequestParam("id") Long id, Model model, HttpServletResponse response){
+        Optional<Product> deletedProduct = productService.deleteProduct(id);
+        if(deletedProduct.isPresent()){
             response.setStatus(HttpServletResponse.SC_CONFLICT);
-            model.addAttribute("message", "Product delete failed");
+            model.addAttribute("message", "Product is not deleted");
             return "innerError";
         }
         return "redirect:/product/all-products";
