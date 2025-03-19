@@ -35,16 +35,15 @@ public class ProductController {
             model.addAttribute("message", "Product creation failed");
             return "innerError";
         }
-        model.addAttribute("product", createdProduct.get());
-        return "products";
+        return "redirect:/product/all-products";
     }
 
     @GetMapping("/edit/{id}")
-    public String getProductEditPage(@PathVariable("id") Long id, Model model, HttpServletResponse response){
-        Optional<Product> product = productService.getProductById(id);
+    public String getProductEditPage(@PathVariable("id") Long productId, Model model, HttpServletResponse response){
+        Optional<Product> product = productService.getProductById(productId);
         if(product.isEmpty()){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            model.addAttribute("message", "Product not found id=" + product);
+            model.addAttribute("message", "Product not found id=" + productId);
             return "innerError";
         }
         model.addAttribute("product", product.get());
@@ -73,21 +72,18 @@ public class ProductController {
             return "innerError";
         }
         response.setStatus(HttpServletResponse.SC_OK);
-        model.addAttribute("product", updatedProduct.get());
-        return "products";
+        return "redirect:/product/all-products";
     }
 
     @PostMapping("/delete")
-    public String deleteProduct(@ModelAttribute("productId") Long productId, Model model, HttpServletResponse response){
+    public String deleteProduct(@RequestParam("productId") Long productId, Model model, HttpServletResponse response){
         Optional<Product> deletedProduct = productService.deleteProduct(productId);
         if(deletedProduct.isEmpty()){
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             model.addAttribute("message", "Product delete failed");
             return "innerError";
         }
-        response.setStatus(HttpServletResponse.SC_OK);
-        model.addAttribute("product", deletedProduct.get());
-        return "products";
+        return "redirect:/product/all-products";
     }
 
     //getAll

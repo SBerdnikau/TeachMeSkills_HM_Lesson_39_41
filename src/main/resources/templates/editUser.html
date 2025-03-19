@@ -1,12 +1,11 @@
-
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Update user</title>
 </head>
 <body>
-
-<h1>Update user:</h1>
-<form th:action="@{user}" method="post">
+<h1>Update user</h1>
+<form th:action="@{/user/update}" method="post">
     <div>
         <label for="firstname">First name:</label>
         <input type="text" id="firstname" name="firstname" th:value="${user.firstname}" required>

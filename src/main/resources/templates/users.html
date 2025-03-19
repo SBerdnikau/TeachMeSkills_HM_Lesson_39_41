@@ -26,7 +26,15 @@
         <td th:text="${user.created}"></td>
         <td th:text="${user.updated}"></td>
         <td th:text="${user.deleted}"></td>
+        <td>
+            <a th:href="@{/user/edit/{id}(id=${user.id})}">Edit</a>
+            <form th:action="@{/user/delete}" method="post" style="display:inline;">
+                <input type="hidden" name="userId" th:value="${user.id}" />
+                <button type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
 </table>
+<a th:href="@{/user/create}">Create New User</a>
 </body>
 </html>

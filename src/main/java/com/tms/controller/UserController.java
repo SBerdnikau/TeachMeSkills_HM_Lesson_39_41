@@ -6,11 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,25 +49,25 @@ public class UserController {
             return "innerError";
         }
         model.addAttribute("user", createdUser.get());
-        return "user";
+        return "redirect:/user/all-users";
     }
 
     //Read
     @GetMapping("/{id}")
-    public String getUserById(@PathVariable("id") Long id, Model model, HttpServletResponse response) {
-        Optional<User> user = userService.getUserById(id);
+    public String getUserById(@RequestParam("id") Long userId, Model model, HttpServletResponse response) {
+        Optional<User> user = userService.getUserById(userId);
         if (user.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND); //404
-            model.addAttribute("message", "User not found: id=" + id);
+            model.addAttribute("message", "User not found: id=" + userId);
             return "innerError";
         }
         response.setStatus(HttpServletResponse.SC_OK); //200
         model.addAttribute("user", user.get());
-        return "user";
+        return "users";
     }
 
     //Update
-    @PostMapping
+    @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User user, Model model, HttpServletResponse response) {
         Optional<User> userUpdated = userService.updateUser(user);
         if (userUpdated.isEmpty()) {
@@ -80,13 +76,12 @@ public class UserController {
             return "innerError";
         }
         response.setStatus(HttpServletResponse.SC_OK);
-        model.addAttribute("user", userUpdated.get());
-        return "user";
+        return "redirect:/user/all-users";
     }
 
     //Delete
-    @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long userId, Model model, HttpServletResponse response) {
+    @PostMapping("/delete")
+    public String deleteUser(@RequestParam("userId") Long userId, Model model, HttpServletResponse response) {
         Optional<User> userDeleted = userService.deleteUser(userId);
         if (userDeleted.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -94,8 +89,7 @@ public class UserController {
             return "innerError";
         }
         response.setStatus(HttpServletResponse.SC_OK);
-        model.addAttribute("user", userDeleted.get());
-        return "user";
+        return "redirect:/user/all-users";
     }
 
     //getAll

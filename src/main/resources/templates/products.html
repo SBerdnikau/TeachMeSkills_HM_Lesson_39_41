@@ -18,7 +18,15 @@
         <td th:text="${product.price}"></td>
         <td th:text="${product.created}"></td>
         <td th:text="${product.updated}"></td>
+        <td>
+            <a th:href="@{/product/edit/{id}(id=${product.id})}">Edit</a>
+            <form th:action="@{/product/delete}" method="post" style="display:inline;">
+                <input type="hidden" name="productsId" th:value="${product.id}" />
+                <button type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
 </table>
+<a th:href="@{/product/create}">Create New Product</a>
 </body>
 </html>

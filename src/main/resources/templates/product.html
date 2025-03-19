@@ -10,10 +10,12 @@
 <p th:inline="text">Created: [[${product.created}]]</p>
 <p th:inline="text">Updated: [[${product.updated}]]</p>
 
-<form th:action="@{/product/edit/{id}(id=${product.id})}" method="get">
+<form th:action="@{/product}" method="get">
+    <input type="hidden" name="id" th:value="${product.id}" />
     <button type="submit" class="btn">Update product</button>
 </form>
-<form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
+<form th:action="@{/product}" method="post">
+    <input type="hidden" name="id" th:value="${product.id}" />
     <button type="submit" class="btn">Delete product</button>
 </form>
 </body>

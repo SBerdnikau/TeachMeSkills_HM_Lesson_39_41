@@ -14,11 +14,13 @@
 <p th:inline="text">Updated: [[${user.updated}]]</p>
 <p th:inline="text">Deleted: [[${user.deleted}]]</p>
 
-<form th:action="@{/user/edit/{id}(id=${user.id})}" method="get">
-    <button type="submit" class="btn">Update user</button>
+<form th:action="@{/user}" method="get">
+    <input type="hidden" name="id" th:value="${user.id}" />
+    <button type="submit">Update user</button>
 </form>
-<form th:action="@{/user/delete/{id}(id=${user.id})}" method="post">
-    <button type="submit" class="btn">Delete user</button>
+<form th:action="@{/user}" method="post">
+    <input type="hidden" name="id" th:value="${user.id}" />
+    <button type="submit">Delete user</button>
 </form>
 </body>
 </html>

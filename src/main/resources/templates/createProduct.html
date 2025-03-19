@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create product</title>
 </head>
 <body>
 <h2>Create product</h2>
-<form th:action="@{create}" method="POST">
+<form th:action="@{/product/create}" method="POST">
     <div>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name">
@@ -14,8 +15,9 @@
         <label for="price">Price:</label>
         <input type="number" id="price" name="price">
     </div>
-
-    <input type="submit" value="Create product">
+    <div>
+        <button type="submit">Create product</button>
+    </div>
 </form>
 </body>
 </html>
