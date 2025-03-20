@@ -25,7 +25,7 @@
         <td th:text="${user.sex}"></td>
         <td th:text="${user.created}"></td>
         <td th:text="${user.updated}"></td>
-        <td th:text="${user.deleted}"></td>
+        <td th:text="${user.isDeleted}"></td>
         <td>
             <a th:href="@{/user/edit/{id}(id=${user.id})}">Edit</a>
             <form th:action="@{/user/delete}" method="post" style="display:inline;">

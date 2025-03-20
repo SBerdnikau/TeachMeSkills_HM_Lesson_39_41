@@ -48,7 +48,6 @@ public class UserController {
             model.addAttribute("message", "User not created");
             return "innerError";
         }
-        model.addAttribute("user", createdUser.get());
         return "redirect:/user/all-users";
     }
 
@@ -75,7 +74,6 @@ public class UserController {
             model.addAttribute("message", "User not updated.");
             return "innerError";
         }
-        response.setStatus(HttpServletResponse.SC_OK);
         return "redirect:/user/all-users";
     }
 
@@ -88,7 +86,6 @@ public class UserController {
             model.addAttribute("message", "User not deleted.");
             return "innerError";
         }
-        response.setStatus(HttpServletResponse.SC_OK);
         return "redirect:/user/all-users";
     }
 
